@@ -1,6 +1,6 @@
 
 .container {
-	height: 50vh;
+	height: 40vh;
 	display: -webkit-flex;
 	display: -moz-flex;
 	display: -ms-flex;
@@ -9,6 +9,11 @@
 	justify-content: center;
 	align-items: center;
 	background-color: grey;
+}
+.mechanics {
+  color: #000;
+  height: 10vh;
+  background-color: #d6d0c5;
 }
 
 .regularRandom {
@@ -31,6 +36,7 @@
 }
 
 .health-bar {
+  display: block;
   align-self: flex-start;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -43,7 +49,14 @@
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  position: relative;
+  
+
+  .hp{
+    left: 50%;
+    text-align: center;
+    position: absolute;
+    z-index: 1;
+  }
 }
 .bar {
   background: #c54;
@@ -65,18 +78,18 @@
   transition: width .5s linear;
 }
 
-.crit {
-  position: absolute;
-  z-index: -1;
+.onOff {
   opacity: 0;
   margin: 10px 0 0 20px;
 }
-.crit + label {
+
+
+.onOff + label {
   position: relative;
   padding: 0 0 0 60px;
   cursor: pointer;
 }
-.crit + label:before {
+.onOff + label:before {
   content: '';
   position: absolute;
   top: -4px;
@@ -88,7 +101,7 @@
   box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
   transition: .2s;
 }
-.crit + label:after {
+.onOff + label:after {
   content: '';
   position: absolute;
   top: -2px;
@@ -100,9 +113,9 @@
   box-shadow: 0 2px 5px rgba(0,0,0,.3);
   transition: .2s;
 }
-.crit:checked + label:before {
+.onOff:checked + label:before {
   background: #9FD468;
 }
-.crit:checked + label:after {
+.onOff:checked + label:after {
   left: 26px;
 }

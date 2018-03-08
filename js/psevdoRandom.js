@@ -2,37 +2,34 @@ $(document).ready(function(){
 
 	class Player{
 
-		constructor(hp,baseMaxDamage,baseMinDamage,strength,agility,intelligence,lvl){
-		this.hp=hp||100;
-		this.baseMaxDamage=baseMaxDamage || 20;
-		this.baseMinDamage=baseMinDamage || 10;
-		this.strength=strength || 15;
-		this.agility=agility || 15;
-		this.intelligence=intelligence || 15;
-		this.lvl=lvl || 1;
+		constructor(hp=100,baseArmor=10,baseMaxDamage=20,baseMinDamage=10,strength=15,agility=15,intelligence=15,lvl=1){
+		this.hp=hp;
+		this.baseArmor=baseArmor;
+		this.baseMaxDamage=baseMaxDamage;
+		this.baseMinDamage=baseMinDamage;
+		this.strength=strength;
+		this.agility=agility;
+		this.intelligence=intelligence;
+		this.lvl=lvl;
 		}
 
 		baseDamage() {
-			var maxDamage=this.strength+this.baseMaxDamage+this.lvl*3;
-			var minDamage=this.strength+this.baseMinDamage+this.lvl*3;
-			var damage=Math.floor(Math.random() * (maxDamage - minDamage + 1)) + minDamage;
+			let maxDamage=this.strength+this.baseMaxDamage+this.lvl*3;
+			let minDamage=this.strength+this.baseMinDamage+this.lvl*3;
+			let damage=Math.floor(Math.random() * (maxDamage - minDamage + 1)) + minDamage;
 			return damage;
 		}
 
 		modDamage() {
-			var critObj=crit.crit();
-			var modDamageObj= {
-				dmg:this.baseDamage()*critObj.multiply,
+			let critObj=crit.crit();
+			let ursaSwipe=ursa.furySwipes();
+			let modDamageObj= {
+				dmg:(ursaSwipe+this.baseDamage())*critObj.multiply,
 				color: critObj.color,
 				text: critObj.text
 			};
 			return modDamageObj;
-		} 
-		
-
-		hit() {
-
-		}
+		} 		
 	}
 
 	class Enemy {
@@ -41,6 +38,8 @@ $(document).ready(function(){
 			this.currentHp=currentHp;
 			this.maxHp=maxHp;
 			this.armor=armor;
+			this.doubleHp=this.maxHp*2;
+
 		}
 
 		getDamage(damage) {
@@ -52,29 +51,45 @@ $(document).ready(function(){
 		reincarnation() {
 			if (this.currentHp<=0){
 				this.maxHp*=2;
+				ursa.currentBonusDmg=0;
 				this.currentHp=this.maxHp;
 			}
 		}
 
 		updateHpBar(damage) {
-			var hBar=$(".health-bar"),
-			    bar = hBar.find('.bar');
-
-			var currentHpPerc = (this.currentHp / this.maxHp) * 100;
+			let barText=$(".hp"),
+			    hBar=$(".health-bar"),
+			    bar = hBar.find('.bar'),
+			    max=`${this.maxHp}/${this.maxHp}`,
+			    current=`${this.currentHp}/${this.maxHp}`,
+			    currentHpPerc = (this.currentHp / this.maxHp) * 100;
+			  	barText.css('width',`${hBar.width()}`);
+			    barText.css('margin-left',`-${barText.width()/2}px`);
 			if (currentHpPerc<=0){
-				bar.css('width',"100%")
+				bar.css('width',"100%");
+				barText.html(this.maxHp*2+"/"+this.maxHp*2);
+				
 			}else {
+				barText.html(current);
 				bar.css('width', currentHpPerc+"%"); 
+				
 			 }
 
 		}
 
 	}
 
+	class Mechanics {
+		constructor(){
+			/*To do*/
+		}
+	}
 
-	class Crit {
+
+	class CritMechanic extends Mechanics {
 		
 		constructor(chance,multiply){
+			super();
 			this.chance=chance;
 			this.multiply=multiply;
 		}
@@ -85,13 +100,13 @@ $(document).ready(function(){
 		}
 
 		crit() {
-			var hit = {
+			let hit = {
 				multiply: 1,
 				color: "#fff",
 				text: "урон: "
 			};
 
-			var critHit ={
+			let critHit ={
 				multiply: this.multiply,
 				color: "#FF0000",
 				text: "критический урон: "
@@ -104,22 +119,60 @@ $(document).ready(function(){
 		}	
 	}
 
+	class UrsaMechanic extends Mechanics {
+		constructor(addDmg) {
+			super();
+			this.addDmg=addDmg;
+			this.currentBonusDmg=0;
+		}
 
-		var me = new Player();
-		var crit=new Crit(30,2);
-		var enemy=new Enemy(200,200,100);
+		isEnabled() {
+			return this.enabled=$("#ursa").prop("checked");
+			
+		}	
+    /*Надо думать*/
+	/*	get CurrentBonusDmg() {
+			return this.currentBonusDmg;
+		}
+
+		set CurrentBonusDmg(value) {
+
+			this.currentBonusDmg=value;
+			console.log("setter вызвался");
+
+		}*/
+
+		furySwipes() {
+			
+			if(this.isEnabled()) {
+				let dmg=this.addDmg;
+				 this.currentBonusDmg+=dmg;
+				return this.currentBonusDmg;
+			} else {
+				return 0;
+			}
+		}
+	}
+
+
+		let me = new Player();
+		let crit=new CritMechanic(30,2);
+		let ursa=new UrsaMechanic(15);
+		let enemy=new Enemy(200,200,100);
 
     	console.log(me);
     	console.log(crit);
+    	console.log(ursa);
     	
 
 	$(".regularRandom").click(function(){
-		var now = new Date();
-		var time= now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
-		var modDamageObj=me.modDamage();
+		let now = new Date();
+		let time= now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
+		let modDamageObj=me.modDamage();
 		enemy.getDamage(modDamageObj.dmg);
 		enemy.reincarnation();
-		$(".console").prepend("<p>"+time+"&nbsp "+"<span style="+"color:"+modDamageObj.color+">"+modDamageObj.text+modDamageObj.dmg+" </p>");
+		$(".console").prepend(`<p>${time} <span style=color:${modDamageObj.color}>${modDamageObj.text}
+		 ${modDamageObj.dmg} </span></p>`);
 		console.log(enemy.currentHp);
 	});
 });
