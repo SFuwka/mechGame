@@ -165,7 +165,7 @@ $(document).ready(function(){
     	console.log(ursa);
     	
 
-	$(".regularRandom").click(function(){
+	$(".sprite").click(function(){
 		let now = new Date();
 		let time= now.getHours()+":"+now.getMinutes()+":"+now.getSeconds();
 		let modDamageObj=me.modDamage();
@@ -175,4 +175,35 @@ $(document).ready(function(){
 		 ${modDamageObj.dmg} </span></p>`);
 		console.log(enemy.currentHp);
 	});
+let menu=document.getElementById("menu");
+		sprite.onclick = function() {
+let width=320,
+	height=286,
+	frames=14,
+	currentFrame=0,
+	canvas=document.getElementById("sprite"),
+	ctx=canvas.getContext("2d"),
+	image=new Image();
+	image.src="../img/sprite.png";
+	let mouseX=event.clientX-document.documentElement.clientWidth/2+width/2-83;
+	let mouseY=event.clientY-height/2-35;
+	let timerId = setInterval(function() {
+ draw();
+}, 17);
+console.log(mouseX+" " +mouseY)
+let draw = function() {
+	ctx.clearRect(90,7,width,height);
+	ctx.drawImage(image,width*currentFrame,0,width,height,mouseX,mouseY,width,height);
+
+
+
+	if(currentFrame==frames){
+		clearInterval(timerId);
+		ctx.clearRect(90,7,width,height);
+	} else {
+		currentFrame++;
+	}
+}
+
+}
 });

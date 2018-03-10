@@ -1,4 +1,50 @@
-
+.mainContainer {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  .interface {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    background-color: #001;
+    height: 50vh;
+    justify-content: space-between;;
+    .menu {
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flex;
+      display: -o-flex;
+      display: flex;
+      flex-direction:column;
+      height:50vh;
+      background-color:grey;
+    }
+    .actionPlace {
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flex;
+      display: -o-flex;
+      display: flex;
+      flex-direction: column;
+    }
+    .mechanics{
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flex;
+      display: -o-flex;
+      display: flex;
+      flex-direction:column
+    }
+  }
+  .console {
+    height: 50vh;
+  }
+}
 .container {
 	height: 40vh;
 	display: -webkit-flex;
@@ -12,21 +58,16 @@
 }
 .mechanics {
   color: #000;
-  height: 10vh;
+  height: 50 vh;
   background-color: #d6d0c5;
 }
 
-.regularRandom {
-	background-color: green;
-	width: 100px;
-	height: 100px;
+.sprite {
+	background-color: #000;
+
 }
 
-.psevdoRandom {
-	background-color: red;
-	width: 100px;
-	height: 100px;
-}
+
 
 .console {
 	color: #fff;
@@ -63,17 +104,6 @@
   width: 100%;
   height: 10px;
   position: relative;
-  
-  transition: width .5s linear;
-}
-
-.hit {
-  background: rgba(255,255,255,0.6);
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 0px;
   
   transition: width .5s linear;
 }
@@ -119,3 +149,28 @@
 .onOff:checked + label:after {
   left: 26px;
 }
+
+.menuModal {
+    z-index:3;
+    position: fixed;
+    background: #2a3140;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    opacity: 0;
+    transform-origin: right top;
+    transform: scale(0);
+    visibility: hidden;
+    overflow: hidden;
+    &.open {
+        opacity: 0.99;
+        transform: scale(1);
+        visibility: visible;
+        transition: .2s;
+        }
+    }
+
+.overlayMenu {
+ 
+  }

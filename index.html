@@ -9,28 +9,49 @@
 	<link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-  <div class="container">
-  	<div class="regularRandom"></div>
+    <div class="mainContainer">
+      <div class="interface">
+        <div class="menu" id="menu">
+          <div class="character" role="navigation" id="navToggle">Модальное окно <br> Перс</div>
+        </div>
+        <div class="actionPlace">
+          <div class="health-bar" data-total="100" data-value="100">
+            <div class="hp"></div>
+            <div class="bar"></div> 
+          </div>
+          <div class="sprite">
+             <canvas id="sprite" width="500" height="300" >Не поддерживается</canvas>
+          </div>
+        </div>
+        <div class="mechanics">
+           <input type="checkbox" class="onOff" id="crit" />
+           <label for="crit">Крит</label>
+           <input type="checkbox" class="onOff" id="ursa" />
+           <label for="ursa">Урса</label>
+         </div>
+      </div>
+      <div class="console"></div>
+    </div>
+    
 
-  	<div class="health-bar" data-total="100" data-value="100">
-<div class="hp"></div>
-	  <div class="bar"> 
-
-	  	  <div class="hit"></div>
-	  </div>
-	</div>
-  	<div class="psevdoRandom"></div>
-  </div>
- <div class="mechanics">
-     <input type="checkbox" class="onOff" id="crit" />
-     <label for="crit">Крит</label>
-     <input type="checkbox" class="onOff" id="ursa" />
-     <label for="ursa">Урса</label>
- </div>
-<div class="console"></div>
+<!-- Modals -->
+<div class="menuModal">
+    <nav class="overlayMenu">  
+        <ul role="menu">
+            
+        </ul>
+    </nav>
+</div>
     <!-- Optional JavaScript -->
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/psevdoRandom.js">
+    </script>
+        <script>
+    $("#navToggle").click(function() {
+      $(this).toggleClass("active");
+      $(".menuModal").toggleClass("open");
+      $("body").toggleClass("locked"); 
+});
     </script>
 
   
